@@ -1,0 +1,11 @@
+.row {
+    background: #ECEFF1;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-content: flex-start;
+    overflow: auto;
+    font-family: 'East Sea Dokdo', cursive;
+    border: 1px red solid;
+    margin-bottom: 10px;
+}

@@ -1,36 +1,72 @@
 import React, { Component } from "react";
 import Card from "./components/Card";
 import Wrapper from "./components/Wrapper";
+import Container from "./components/Container";
 import Title from "./components/Title";
-import friends from "./juggalos.json";
+import Score from "./components/Score";
+import cards from "./juggalos.json";
 import "./App.css";
 
 class App extends Component {
-  // Setting this.state.friends to the friends json array
   state = {
-    friends
+    cards: cards,
+    guessed: cards,
+    score: 0,
+    high: 0,
+    correct: "Try not to click the same Juggalo/ette twice!"
   };
 
-  removeFriend = id => {
-    // Filter this.state.friends for friends with an id not equal to the id being removed
-    const friends = this.state.friends.filter(friend => friend.id !== id);
-    // Set this.state.friends equal to the new friends array
-    this.setState({ friends });
+  checkGuess = id => {
+    if (this.state.guessed.find(card => card.id === id)) {
+      this.rightGuess();
+    }
+    else {
+      this.wrongGuess();
+    }
+    this.shuffleCards(cards);
   };
 
-  // Map over this.state.friends and render a FriendCard component for each friend object
+  rightGuess = id => {
+    this.setState({ score: this.state.score + 1 });
+  };
+
+  wrongGuess = id => {
+  
+  };
+
+  shuffleCards = cards => {
+      let random = cards.length, temp, index;
+      while (random > 0) {
+        index = Math.floor(Math.random() * random);
+        random--;
+        temp = cards[random];
+        cards[random] = cards[index];
+        cards[index] = temp;
+      }
+      return cards;
+  };
+
   render() {
     return (
       <Wrapper>
-        <Title><img className ="hatchet" alt="hatchet-man" src="https://officialpsds.com/imageview/r1/6p/r16p8y_large.png?1521316512" />Juggalo Memory</Title>
-        {this.state.friends.map(friend => (
-          <Card
-            removeFriend={this.removeFriend}
-            id={friend.id}
-            key={friend.id}
-            image={friend.image}
+        <Container>
+          <Title><img className ="hatchet" alt="hatchet-man" src="https://officialpsds.com/imageview/r1/6p/r16p8y_large.png?1521316512" />  Juggalo Memory</Title>
+          <Score 
+            score={this.state.score}
+            high={this.state.high}
+            correct={this.state.correct}
           />
-        ))}
+        </Container>
+        <Container>
+          {this.state.cards.map(card => (
+            <Card
+              checkGuess={this.checkGuess}
+              key={card.id}
+              id={card.id}
+              image={card.image}
+            />
+          ))}
+        </Container>
       </Wrapper>
     );
   }
