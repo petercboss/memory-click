@@ -18,20 +18,30 @@ class App extends Component {
 
   checkGuess = id => {
     if (this.state.guessed.find(card => card.id === id)) {
-      this.rightGuess();
+      this.rightGuess(id);
     }
     else {
-      this.wrongGuess();
+      this.wrongGuess(id);
     }
     this.shuffleCards(cards);
   };
 
   rightGuess = id => {
-    this.setState({ score: this.state.score + 1 });
+    this.setState({
+      guessed: this.state.guessed.filter(card => card.id !== id),
+      score: this.state.score + 1,
+      correct: "Correct!!"
+    });
   };
 
   wrongGuess = id => {
-  
+    this.setState({
+      cards: cards,
+      guessed: cards,
+      score: 0,
+      high: (this.state.score > this.state.high) ? this.state.score : this.state.high,
+      correct: "Incorrect!"
+    });
   };
 
   shuffleCards = cards => {
